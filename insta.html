@@ -1,0 +1,122 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Reel Downloader</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+background: linear-gradient(135deg, #8E2DE2, #4A00E0);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            color: white;
+            text-align: center;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 50px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            border: 2px solid red;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            outline: none;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+          background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background: #e63956;
+        }
+        .result {
+            margin-top: 20px;
+        }
+        video, img {
+            max-width: 100%;
+            border-radius: 10px;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #ddd;
+        }
+        .whatsapp-button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1> Insta Reel Downloader</h2>
+        <input type="text" id="urlInput" placeholder="Enter Instagram Reel URL">
+        <button onclick="fetchInstagramReel()">Download</button>
+        <div id="result" class="result"></div>
+   <a href="https://whatsapp.com/channel/0029VakaPzeD38CV78dbGf0e" class="whatsapp-button">Join Our WhatsApp Channel</a>
+    </div>
+        <div class="footer">MADE BY SHAURYA</div>
+    </div><script>
+    function fetchInstagramReel() {
+        const url = document.getElementById('urlInput').value;
+        const resultContainer = document.getElementById('result');
+        resultContainer.innerHTML = '';
+        if (!url) {
+            alert("Please enter a valid URL");
+            return;
+        }
+        resultContainer.innerHTML = '<p>Fetching...</p>';
+        
+        const apiUrl = `https://insta-dl.hazex.workers.dev/?url=${encodeURIComponent(url)}`;
+        
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                resultContainer.innerHTML = '';
+                if (!data.error) {
+                    const mediaUrl = data.result.url;
+                    const extension = data.result.extension;
+                    if (extension === 'mp4') {
+                        const videoElement = document.createElement('video');
+                        videoElement.src = mediaUrl;
+                        videoElement.controls = true;
+                        resultContainer.appendChild(videoElement);
+                    } else {
+                        const imgElement = document.createElement('img');
+                        imgElement.src = mediaUrl;
+                        resultContainer.appendChild(imgElement);
+                    }
+                } else {
+                    alert("Error: " + data.error);
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching the Instagram reel:", error);
+                alert("There was an error fetching the reel.");
+                resultContainer.innerHTML = '';
+            });
+    }
+</script>
+
+</body>
+      </html>
